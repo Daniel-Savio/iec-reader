@@ -2,7 +2,7 @@ export default class Xml{
 
     static xml2js = require('xml2js');
     static fs = require('fs');
-    static parser = new this.xml2js.Parser({ attrkey: "ATTR" });
+    static parser = new this.xml2js.Parser({ attrkey: "attr" });
 
     static xmlParser(xmlUrl:string) {
          let xml_string = Xml.fs.readFileSync(xmlUrl, "utf8");

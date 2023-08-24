@@ -1,15 +1,17 @@
-import React from 'react';
-import { Background } from '../components/backgorund';
 import { useState } from 'react';
 
 export function Home() {
   const [aside, setAside] = useState(true);
-  let translate;
+  
+  function getJson(jsonUrl: string) {
+  }
 
   function handleAside() {
     setAside(!aside);
     console.log(aside);
   }
+
+  
 
   return (
     <div id="home" className="p-4">
@@ -49,6 +51,10 @@ export function Home() {
           </div>
         </section>
       </aside>
+
+      <div id='home-content'>
+        
+      </div>
     </div>
   );
 }
