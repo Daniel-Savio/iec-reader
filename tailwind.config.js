@@ -8,8 +8,23 @@ module.exports = {
       colors: {
         sky: colors.sky,
         cyan: colors.cyan,
-        treetech: '#008242'
+        treetech: {
+          50: '#ecfff5',
+          100: '#d3ffea',
+          200: '#aaffd6',
+          300: '#69ffb7',
+          400: '#21ff91',
+          500: '#00f271',
+          600: '#00ca5a',
+          700: '#009e49',
+          800: '#008242',
+          900: '#026536',
+          950: '#00391b',
+        },
       },
+      dropShadow: {
+        'green': '6px 5px 4px rgba(1, 203, 95, 0.12)'
+      }
     },
   },
   variants: {

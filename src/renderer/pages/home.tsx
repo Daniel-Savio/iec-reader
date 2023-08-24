@@ -1,67 +1,54 @@
 import React from 'react';
 import { Background } from '../components/backgorund';
-import { Switch } from '@headlessui/react';
+import { useState } from 'react';
+
 export function Home() {
-  const [darkMode, setDarkMode] = React.useState(true);
+  const [aside, setAside] = useState(true);
+  let translate;
+
+  function handleAside() {
+    setAside(!aside);
+    console.log(aside);
+  }
 
   return (
-    <div
-      className={`${
-        darkMode ? 'dark' : ''
-      } flex flex-col items-center justify-center h-screen `}
-    >
-      <Background />
-
-      <div className=" dark:text-slate-200 mb-10 text-center">
-        <h1 className="dark:text-slate-200 text-4xl font-bold mb-2">
-          {' '}
-          Aplicação padrão
-        </h1>
-        <h2 className="dark:text-slate-200 text-2xl">
-          {' '}
-          Electron - ReactJs - Typescript - Tailwind{' '}
-        </h2>
-        <h3 className="dark:text-slate-200 text-lg font-bold">
-          {' '}
-          Heroicons + Headless UI{' '}
-        </h3>
-      </div>
-
-      <div className="flex gap-3 align-middle">
-        <h1 className="dark:text-slate-200 text-3xl">lights on</h1>
-
-        <Switch
-          checked={darkMode}
-          onChange={setDarkMode}
-          className={`${darkMode ? 'bg-sky-900' : 'bg-sky-700'}
-          relative inline-flex h-[24px] w-[58px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
-        >
-          <span
-            aria-hidden="true"
-            className={`${darkMode ? 'translate-x-8' : 'translate-x-0'}
-            pointer-events-none inline-block h-[20px] w-[20px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
-          />
-        </Switch>
-
-        <h1 className="dark:text-slate-200 text-3xl">lights off</h1>
-      </div>
-
-      <svg 
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.8}
-        stroke="currentColor"
-        className="w-8 h-8 text-treetech"
+    <div id="home" className="p-4">
+      <aside
+        style={{transform: aside ? 'translateX(0)':'translateX(-96%)'}}
+        id="asside"
+        className="transition ease-in-out delay-150  dark:drop-shadow-green bg-gray-300  dark:bg-gray-800 dark:text-treetech-50 text-center w-1/4 absolute left-0 rounded-e-md h-5/6"
       >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"
-        />
-      </svg>
+        <header className="bg-gray-400 dark:bg-slate-900 rounded-tr-lg">
+          Tool Bar
+        </header>
 
-      
+        <section className="transition ease-in-out delay-150 h-full w-full flex relative" 
+                 
+        >
+          <div className="h-full w-full">batata</div>
+
+          <div
+            onClick={handleAside}
+            className={`w-5 h-full -top-6 right-0 rounded-e-md bg-slate-500 dark:bg-slate-900 absolute flex justify-center items-center hover:cursor-pointer`}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              className="transition ease-in-out delay-50 w-6 h-6"
+              style={{ transform: aside ? 'rotate(0deg)' : 'rotate(180deg)' }}
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 19.5L8.25 12l7.5-7.5"
+              />
+            </svg>
+          </div>
+        </section>
+      </aside>
     </div>
   );
 }
