@@ -15,23 +15,26 @@ export function Home() {
 
   return (
     <div id="home" className="p-4">
+
       <aside
-        style={{transform: aside ? 'translateX(0)':'translateX(-96%)'}}
+        style={{transform: aside ? 'translateX(0)':'translateX(-94%)'}}
         id="asside"
-        className="transition ease-in-out delay-150  dark:drop-shadow-green bg-gray-300  dark:bg-gray-800 dark:text-treetech-50 text-center w-1/4 absolute left-0 rounded-e-md h-5/6"
+        className="transition ease-in-out delay-150 drop-shadow-2xl bg-gray-300  dark:bg-dark-200 dark:text-treetech-50 text-center w-1/4 absolute left-0 rounded-e-md h-5/6"
       >
-        <header className="bg-gray-400 dark:bg-slate-900 rounded-tr-lg">
+        <header className="bg-gray-400 dark:bg-dark-250 rounded-tr-lg">
           Tool Bar
         </header>
 
         <section className="transition ease-in-out delay-150 h-full w-full flex relative" 
                  
         >
-          <div className="h-full w-full">batata</div>
+          <div className="h-full w-full">
+            
+          </div>
 
           <div
             onClick={handleAside}
-            className={`w-5 h-full -top-6 right-0 rounded-e-md bg-slate-500 dark:bg-slate-900 absolute flex justify-center items-center hover:cursor-pointer`}
+            className={`w-5 h-full -top-6 right-0 rounded-e-md bg-slate-500 border-l-2 dark:bg-dark-200 dark:border-dark-100 absolute flex justify-center items-center hover:cursor-pointer`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -49,6 +52,8 @@ export function Home() {
               />
             </svg>
           </div>
+
+
         </section>
       </aside>
 

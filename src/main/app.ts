@@ -23,6 +23,12 @@ export default class App {
         width: 1024,
         height: 728,
         icon: getAssetPath('icon.png'),
+        webPreferences: {
+          nodeIntegration: true,
+          contextIsolation: true,
+          preload: path.join(__dirname, 'preload.ts')
+
+        }
       });
     
       App.mainWindow.loadURL(resolveHtmlPath('index.html'));

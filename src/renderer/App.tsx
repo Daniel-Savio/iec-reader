@@ -16,29 +16,29 @@ export default function App() {
     >
       <Background />
 
-      <header className="flex justify-between pl-4 pr-4 pt-2 pb-2 items-center rounded-b-2xl bg-gray-400 dark:bg-slate-800">
+      <header className="flex justify-between pl-4 pr-4 pt-2 pb-2 items-center border-b-2 border-dark-100 bg-gray-400 dark:bg-dark-250">
         
         <div className="flex items-center ">
-          <img src={require('./img/icon.svg')} alt="" />
-          <h1 className="text-2xl font-bold dark:text-treetech-50">SCL Manager</h1>
+          <img src={require('./img/icon.svg')} className='h-10' />
+          <h1 className="text-lg font-bold dark:text-treetech-50">SCL Manager</h1>
         </div>
 
-        <div id='header-tools' className="flex">
+        <div id='header-tools' className="flex items-center">
           <Switch
             checked={darkMode}
             onChange={setDarkMode}
             className={`${
               darkMode ? 'bg-treetech-800' : 'bg-gray-300'
-            } relative inline-flex h-6 w-11 items-center rounded-full mr-2`}
+            } relative inline-flex h-4 w-9 items-center rounded-full mr-2`}
           >
             <span
               className={`${
-                darkMode ? 'translate-x-6' : 'translate-x-1'
-              } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                darkMode ? 'translate-x-5' : 'translate-x-1'
+              } inline-block h-3 w-3 transform rounded-full bg-white transition`}
             />
           </Switch>
 
-          <div className="pl-4 pr-4 text-md bg-treetech-800  text-treetech-50 rounded-full hover:cursor-pointer">
+          <div className="pl-4 pr-4 text-md bg-gradient-to-r from-treetech-900 to-treetech-700   text-treetech-50 rounded-sm hover:cursor-pointer">
             Baixar SCL
           </div>
         </div>
