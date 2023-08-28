@@ -1,6 +1,3 @@
-
-
-
 export default class SCL{
 
     private static fs = require("fs");
@@ -11,7 +8,7 @@ export default class SCL{
     {
         SCL.jsonUrl = jsonUrl;
     }
-  
+
     
     private static SCLfile() {
         let SCLString =  this.fs.readFileSync(this.jsonUrl, "utf8", (err: Error) => {
@@ -26,11 +23,16 @@ export default class SCL{
     public getScl(){
         return  SCL.SCLfile();
     }
+    
+    public getName(){
+        return SCL.SCLfile().SCL.Header[0].attr.version;
+    }
 
     public getIEDs(){
         let iedArray = SCL.SCLfile().SCL.IED[0].AccessPoint[0].Server[0].LDevice;
         return iedArray
     }
+    
 
     
 

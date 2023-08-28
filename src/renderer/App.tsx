@@ -13,17 +13,15 @@ export default function App() {
   const [maximizeWindow, setMaximizeWindow] = useState(true);
 
  function handleClose() {
-    console.log('app is closed');
     window.electron.close();
-    
  }
 
  function handleMinimize() {
-  
+    window.electron.minimize();
  }
 
  function handleMaximize() {
-  
+    window.electron.maximize();
  }
 
 

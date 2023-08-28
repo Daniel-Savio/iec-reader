@@ -4,7 +4,8 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-
+import SCL from './scl'
+import XML from './xml';
 class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
@@ -12,15 +13,12 @@ class AppUpdater {
     autoUpdater.checkForUpdatesAndNotify();
   }
 }
-
 let mainWindow: BrowserWindow | null = null;
-
-
-
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();
 }
+
 
 const isDebug = process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 
@@ -100,14 +98,24 @@ const createWindow = async () => {
   new AppUpdater();
 };
 
-
+// Window controller
 ipcMain.on('closeApp', async (event, arg) => {
+    mainWindow!.close()
+    if (process.platform !== 'darwin') {
+      app.quit();
+    }
+});
+ipcMain.on('minimize', async (event, arg) => {
+    mainWindow!.minimize()
 
-    mainWindow = null;
-    app.quit();
-
-  
-
+});
+ipcMain.on('maximize', async (event, arg) => {
+    if(mainWindow!.isMaximized()){
+      mainWindow!.restore();
+    }else{
+      mainWindow!.maximize();
+    }
+    
 });
 
 app.on('window-all-closed', () => {
@@ -117,7 +125,6 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
-
 app.whenReady().then(() => {
     createWindow();
     app.on('activate', () => {
@@ -126,3 +133,12 @@ app.whenReady().then(() => {
       if (mainWindow === null) createWindow();
     });
   }).catch(console.log);
+
+const archive = path.join(__dirname, '../archive/')
+const xml = new XML();
+xml.xmlParser(archive+"scl/Jiga.cid");
+const scl = new SCL(archive+"scl/Jiga.json");
+console.log(scl.getIEDs());
+console.log("Name: " + scl.getName());
+
+
