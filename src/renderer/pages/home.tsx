@@ -65,9 +65,10 @@ export function Home() {
         leaveFrom="opacity-100 translate-y-0"
         leaveTo="opacity-0 translate-y-56"
         id="home-list"
-        className="w-80 p-2 border shadow-2xl border-dark-50 bg-dark-150 bottom-[15rem] absolute"
+        className="w-80 p-2 shadow-3xl bottom-[15rem] z-10 absolute"
         style={{ left: 'calc(50% - 7rem)' }}
       >
+        <div className='bg-gradient-to-r from-treetech-900 to-treetech-700 text-center rounded-md hover:cursor-pointer p-1 text-treetech-50'>Add +</div>
         <List></List>
       </Transition>
 
