@@ -1,6 +1,9 @@
 # Logs
 logs
 *.log
+*.tsx
+*.js
+*.ejs
 
 # Runtime data
 pids
