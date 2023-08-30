@@ -2,13 +2,11 @@ import { Fragment, useState } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 
-const array: { id: number; name: string }[] = [
-  { id: 1, name: 'Jiga.cid' },
-  { id: 2, name: 'Test.icd' },
-];
+const arr = [{id:1, name: "Jiga.cid"}, {id:2, name: "Teste.cid"}]
+
 
 export function List() {
-  const [selected, setSelected] = useState(array[0]);
+  const [selected, setSelected] = useState(arr[0]);
 
   return (
     <div className="m-auto center text-center items-center w-full text-treetech-500">
@@ -30,7 +28,7 @@ export function List() {
             leaveTo="opacity-0"
           >
             <Listbox.Options className="text-dark-50 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-dark-200 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              {array.map((item, itemIdx) => (
+              {arr.map((item, itemIdx) => (
                 <Listbox.Option
                   key={itemIdx}
                   className={({ active }) =>

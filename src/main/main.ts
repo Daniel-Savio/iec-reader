@@ -140,5 +140,6 @@ xml.xmlParser(archive+"scl/Jiga.cid");
 const scl = new SCL(archive+"scl/Jiga.json");
 console.log(scl.getIEDs());
 console.log("Name: " + scl.getName());
+console.log(scl.getAllFiles(archive+'scl'));
 
 

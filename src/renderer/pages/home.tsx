@@ -15,6 +15,7 @@ export function Home() {
     setIsShowing((isShowing) => !isShowing);
   }
 
+  
   return (
     <div id="home" className="p-4 ">
       <aside
