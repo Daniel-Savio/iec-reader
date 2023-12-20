@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { List } from '../components/list';
 import { Transition } from '@headlessui/react';
+
+
+
 
 export function Home() {
   const [aside, setAside] = useState(true);
   const [isShowing, setIsShowing] = useState(false);
+  let scl: any;
 
   function handleAside() {
     setAside(!aside);
@@ -13,6 +17,16 @@ export function Home() {
 
   function handleShowList() {
     setIsShowing((isShowing) => !isShowing);
+  }
+
+  function handleScl(){
+    window.electron.askForScl();
+    window.electron.scl((data:any) => {
+      scl = data
+    })
+
+    console.log(scl)
+    
   }
 
   
@@ -54,8 +68,13 @@ export function Home() {
       </aside>
 
       <div id="home-content" className="pl-4 text-dark-50">
-        Home
+        
+        <button onClick={handleScl} className='p-2 bg-treetech-700 text-treetech-50'>LER</button>
+
       </div>
+
+
+
 
       <Transition
         show={isShowing}
@@ -97,6 +116,8 @@ export function Home() {
 
         <h3 className="text-slate-50 my-2">Chose a SCL file</h3>
       </div>
+
+
     </div>
   );
 }

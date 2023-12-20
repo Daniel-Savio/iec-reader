@@ -1,19 +1,31 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 
-const arr = [{id:1, name: "Jiga.cid"}, {id:2, name: "Teste.cid"}]
 
+const arr = [{itemIdx: 1, name: "daniel"}, {itemIdx: 2, name:"teste"}]
+
+window.electron.files((data: any) =>{
+  console.log(data)
+});
 
 export function List() {
-  const [selected, setSelected] = useState(arr[0]);
+  const [selected, setSelected] = useState();
+  const [list, setList] = useState();
+  
+  function handleList(){
+    console.log("list")
+    window.electron.files((data: any) =>{
+      console.log(data)
+    });
+  }
 
   return (
-    <div className="m-auto center text-center items-center w-full text-treetech-500">
-      <Listbox value={selected} onChange={setSelected}>
+    <div onClick={handleList} className="m-auto center text-center items-center w-full text-treetech-500">
+      <Listbox value={selected!} onChange={setSelected}>
         <div className="relative mt-1">
           <Listbox.Button className="relative w-full cursor-pointer rounded-lg bg-dark-200 py-2 pl-3 pr-10 text-center shadow-md focus:outline-none  focus-visible:ring-offset-treetech-500">
-            <span className="block truncate">{selected.name}</span>
+            <span className="block truncate">{selected!}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ChevronUpDownIcon
                 className="h-5 w-5 text-dark-50 hover:text-treetech-800"
@@ -28,7 +40,7 @@ export function List() {
             leaveTo="opacity-0"
           >
             <Listbox.Options className="text-dark-50 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-dark-200 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              {arr.map((item, itemIdx) => (
+              {arr!.map((item, itemIdx) => (
                 <Listbox.Option
                   key={itemIdx}
                   className={({ active }) =>

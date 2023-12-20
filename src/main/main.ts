@@ -6,6 +6,7 @@ import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import SCL from './scl'
 import XML from './xml';
+import fs from 'fs'
 class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
@@ -20,12 +21,11 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 
-const isDebug = process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
+const isDebug = true;
 
 if (isDebug) {
   require('electron-debug')();
 }
-
 const installExtensions = async () => {
   const installer = require('electron-devtools-installer');
   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
@@ -38,7 +38,6 @@ const installExtensions = async () => {
     )
     .catch(console.log);
 };
-
 const createWindow = async () => {
   if (isDebug) {
     await installExtensions();
@@ -60,9 +59,9 @@ const createWindow = async () => {
     frame: false,
     webPreferences: {
       preload: app.isPackaged
-        ? path.join(__dirname, 'preload.js')
+        ? path.join(__dirname, './preload.js')
         : path.join(__dirname, '../../.erb/dll/preload.js'),
-        devTools: false
+        devTools: true
        
     },
   });
@@ -98,6 +97,10 @@ const createWindow = async () => {
   new AppUpdater();
 };
 
+
+
+
+
 // Window controller
 ipcMain.on('closeApp', async (event, arg) => {
     mainWindow!.close()
@@ -114,9 +117,21 @@ ipcMain.on('maximize', async (event, arg) => {
       mainWindow!.restore();
     }else{
       mainWindow!.maximize();
+      console.log("minimized");
     }
     
 });
+
+ipcMain.on('askFor', async (event, arg) => {
+  if(arg === "scl") 
+  mainWindow!.webContents.send("scl", scl.getIEDs());
+  
+});
+ipcMain.on('askFor', async (event, arg) => {
+  if(arg === 'files'){
+    mainWindow!.webContents.send('files', files)
+  }
+})
 
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
@@ -125,8 +140,10 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
+
 app.whenReady().then(() => {
     createWindow();
+
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.
@@ -134,12 +151,31 @@ app.whenReady().then(() => {
     });
   }).catch(console.log);
 
+
+
+
+
+
+
+// SCL management
+function getAllFiles(dir: string) {
+  let files = [];
+  const fileList = fs.readdirSync(dir);
+  let index = 0
+  for (const file of fileList) {
+    const name = file;
+    let fileObject = {index: index, name: name}
+    files.push(fileObject);
+    index++
+  }
+  console.log(files)
+  return files;
+}
+
 const archive = path.join(__dirname, '../archive/')
 const xml = new XML();
 xml.xmlParser(archive+"scl/Jiga.cid");
 const scl = new SCL(archive+"scl/Jiga.json");
-console.log(scl.getIEDs());
-console.log("Name: " + scl.getName());
-console.log(scl.getAllFiles(archive+'scl'));
+let files = getAllFiles(archive+"scl/")
 
 

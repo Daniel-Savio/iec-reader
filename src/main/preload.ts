@@ -1,15 +1,37 @@
 import { ipcRenderer } from "electron"
-const { contextBridge } = require('electron')
+const { contextBridge } = require('electron');
+import path from 'path';
+import SCL from './scl'
+import XML from './xml';
+
+
 
 console.log("preloaded file")
 
 const electronHandler = {
+  //First value is the channel and the scond is the data
   close: () => ipcRenderer.send("closeApp", "closeApp"),
   minimize: () => ipcRenderer.send('minimize', 'minimize'),
   maximize: () => ipcRenderer.send('maximize', 'maximize'),
+  devTools: () => ipcRenderer.send('devTools', 'devTools'),
+
+
+  askForScl: () => ipcRenderer.send('askFor', 'scl'),
+  scl: (callback:any) => ipcRenderer.on('scl', (events, args)=>{
+    callback(args);
+  }),
+
+  askForFiles: () => ipcRenderer.send('askFor', 'files'),
+  files:(callback: any) => ipcRenderer.on('files', (events, args)=>{
+    callback(args);
+  }),
+
+
   on: (channel: string, func: any) => ipcRenderer.send(channel, (evt: any, ...args: any[]) =>func(...args)),
-  // we can also expose variables, not just functions
+  
 }
+
+
 
 contextBridge.exposeInMainWorld('electron', electronHandler);
 

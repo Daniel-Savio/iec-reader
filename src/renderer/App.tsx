@@ -12,6 +12,8 @@ export default function App() {
   const [minimizwWindow, setMinimizeWindow] = useState(false);
   const [maximizeWindow, setMaximizeWindow] = useState(true);
 
+ 
+
  function handleClose() {
     window.electron.close();
  }
@@ -23,6 +25,11 @@ export default function App() {
  function handleMaximize() {
     window.electron.maximize();
  }
+
+ function handleDevTools() {
+  window.electron.devTools();
+}
+
 
 
   return (
@@ -59,6 +66,7 @@ export default function App() {
             />
           </Switch>
 
+         
           <div id="minimize" onClick={handleMinimize} className='hover:cursor-pointer hover:bg-green-400  h-3 w-3 rounded-full bg-green-500'></div>
           <div id="maximize" onClick={handleMaximize} className='hover:cursor-pointer hover:bg-yellow-400 h-3 w-3 rounded-full  bg-yellow-500'></div>
           <div id="close" onClick={handleClose} className='hover:cursor-pointer hover:bg-red-400 h-3 w-3 rounded-full bg-red-500'></div>
