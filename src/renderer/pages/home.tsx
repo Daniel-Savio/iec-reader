@@ -4,7 +4,6 @@ import { Transition } from '@headlessui/react';
 
 
 
-
 export function Home() {
   const [aside, setAside] = useState(true);
   const [isShowing, setIsShowing] = useState(false);
@@ -29,8 +28,29 @@ export function Home() {
     
   }
 
+
+
+  useEffect(() => {
+    let arr: Array<any>;
+
+    window.electron.askForFiles()
+    window.electron.files((data: any) =>{
+      window.localStorage.setItem('files', JSON.stringify(data))
+      console.log(window.localStorage.getItem('files'))
+
+    
+    });
+
+    
+  });
+
   
   return (
+
+    
+
+
+
     <div id="home" className="p-4 ">
       <aside
         style={{ transform: aside ? 'translateX(0)' : 'translateX(-94%)' }}
@@ -89,7 +109,10 @@ export function Home() {
         style={{ left: 'calc(50% - 7rem)' }}
       >
         <div className='bg-gradient-to-r from-treetech-900 to-treetech-700 text-center rounded-md hover:cursor-pointer p-1 text-treetech-50'>Add +</div>
-        <List></List>
+        <List a = 
+        {JSON.parse(window.localStorage.getItem('files')!)}>
+
+        </List>
       </Transition>
 
       <div className="absolute bottom-2 left-1/2">

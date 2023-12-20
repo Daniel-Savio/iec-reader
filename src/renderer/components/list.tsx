@@ -3,25 +3,15 @@ import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 
 
-const arr = [{itemIdx: 1, name: "daniel"}, {itemIdx: 2, name:"teste"}]
 
-window.electron.files((data: any) =>{
-  console.log(data)
-});
-
-export function List() {
+export function List(arr: Array<any>){
   const [selected, setSelected] = useState();
   const [list, setList] = useState();
   
-  function handleList(){
-    console.log("list")
-    window.electron.files((data: any) =>{
-      console.log(data)
-    });
-  }
+
 
   return (
-    <div onClick={handleList} className="m-auto center text-center items-center w-full text-treetech-500">
+    <div className="m-auto center text-center items-center w-full text-treetech-500">
       <Listbox value={selected!} onChange={setSelected}>
         <div className="relative mt-1">
           <Listbox.Button className="relative w-full cursor-pointer rounded-lg bg-dark-200 py-2 pl-3 pr-10 text-center shadow-md focus:outline-none  focus-visible:ring-offset-treetech-500">

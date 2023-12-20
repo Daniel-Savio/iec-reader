@@ -26,11 +26,6 @@ export default function App() {
     window.electron.maximize();
  }
 
- function handleDevTools() {
-  window.electron.devTools();
-}
-
-
 
   return (
     <div

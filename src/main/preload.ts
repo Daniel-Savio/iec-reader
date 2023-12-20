@@ -22,7 +22,7 @@ const electronHandler = {
   }),
 
   askForFiles: () => ipcRenderer.send('askFor', 'files'),
-  files:(callback: any) => ipcRenderer.on('files', (events, args)=>{
+  files:(callback: any) => ipcRenderer.on('files', (events, args: Array<any>)=>{
     callback(args);
   }),
 
