@@ -1,9 +1,5 @@
 import { ipcRenderer } from "electron"
 const { contextBridge } = require('electron');
-import path from 'path';
-import SCL from './scl'
-import XML from './xml';
-
 
 
 console.log("preloaded file")
