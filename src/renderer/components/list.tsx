@@ -4,7 +4,7 @@ import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
 
 
 
-export function List(arr: Array<any>){
+export function List(arr: string[]){
   const [selected, setSelected] = useState();
   const [list, setList] = useState();
   

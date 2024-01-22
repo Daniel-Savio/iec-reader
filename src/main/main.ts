@@ -4,9 +4,11 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
-import SCL from './scl'
-import XML from './xml';
+import {SCL} from './scl'
 import fs from 'fs'
+
+const archiveDir = path.join(__dirname, '../archive/')
+const sclDir = path.join(__dirname, '../archive/scl/json/')
 class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
@@ -98,6 +100,24 @@ const createWindow = async () => {
 };
 
 
+// SCL management
+function getAllFiles(dir: string) {
+  let files = [];
+  const fileList = fs.readdirSync(dir);
+  let index = 0
+  for (const file of fileList) {
+    const name = file;
+    let fileObject = {index: index, name: name}
+    files.push(fileObject);
+    index++
+  }
+  console.log(files)
+  return files;
+}
+
+const scl = new SCL(path.join(__dirname, '../archive/scl/Jiga.cid'), "Jiga")
+
+
 
 
 
@@ -123,15 +143,12 @@ ipcMain.on('maximize', async (event, arg) => {
 });
 
 ipcMain.on('askFor', async (event, arg) => {
-  if(arg === "scl") 
-  mainWindow!.webContents.send("scl", scl.getIEDs());
+  if(arg === "scl"){ 
+  mainWindow!.webContents.send("scl", scl.getScl());
+}
+
   
 });
-ipcMain.on('askFor', async (event, arg) => {
-  if(arg === 'files'){
-    mainWindow!.webContents.send('files', files)
-  }
-})
 
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
@@ -157,25 +174,5 @@ app.whenReady().then(() => {
 
 
 
-// SCL management
-function getAllFiles(dir: string) {
-  let files = [];
-  const fileList = fs.readdirSync(dir);
-  let index = 0
-  for (const file of fileList) {
-    const name = file;
-    let fileObject = {index: index, name: name}
-    files.push(fileObject);
-    index++
-  }
-  console.log(files)
-  return files;
-}
-
-const archive = path.join(__dirname, '../archive/')
-const xml = new XML();
-xml.xmlParser(archive+"scl/Jiga.cid");
-const scl = new SCL(archive+"scl/Jiga.json");
-let files = getAllFiles(archive+"scl/")
 
 

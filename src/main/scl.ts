@@ -1,43 +1,38 @@
 import fs from 'fs';
-export default class SCL {
-  private static jsonUrl: string;
-  static fs = require('fs');
+import path from 'path';
+import { parseString } from "xml2js";
 
-  constructor(jsonUrl: string) {
-    SCL.jsonUrl = jsonUrl;
+export class SCL {
+
+  readonly sclPath: string;
+  jsonPath: string;
+  scl: {};
+  
+
+  constructor(sclPath: string, name: string) {
+    this.sclPath = sclPath;
+    this.jsonPath = "";
+    this.scl = {}
+    this.parseScl(name)
   }
 
-  private static SCLfile() {
-    let SCLString = SCL.fs.readFileSync(this.jsonUrl, 'utf8', (err: Error) => {
-      if (err) {
-        console.log('Erro ao ler SCLjson' + '\n' + err.message);
+  parseScl(name: string){
+    const xml = fs.readFileSync(this.sclPath, 'utf8');
+    parseString(xml, (err, result)=>{
+      if(!err){
+        this.scl = result
+        // fs.writeFileSync(path.join(__dirname, "../archive/scl/json/"+name+".json"), JSON.stringify(result));
+        // this.jsonPath = path.join(__dirname, "../archive/scl/json/"+name+".json")
+
+        console.log(this.scl)
       }
+
+
     });
-    return JSON.parse(SCLString);
   }
 
-  public getAllFiles(dir: string) {
-    let files = [];
-    const fileList = fs.readdirSync(dir);
-   
-    for (const file of fileList) {
-      const name = `${dir}/${file}`;
-      files.push(name);
-    }
-
-    return files;
+  getScl(){
+    return this.scl;
   }
 
-  public getScl() {
-    return SCL.SCLfile();
-  }
-
-  public getName() {
-    return SCL.SCLfile().SCL.Header[0].attr.version;
-  }
-
-  public getIEDs() {
-    let iedArray = SCL.SCLfile().SCL.IED[0].AccessPoint[0].Server[0].LDevice;
-    return iedArray;
-  }
 }

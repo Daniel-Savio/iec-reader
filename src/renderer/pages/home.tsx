@@ -2,12 +2,10 @@ import { useState, useEffect } from 'react';
 import { List } from '../components/list';
 import { Transition } from '@headlessui/react';
 
-
-
 export function Home() {
   const [aside, setAside] = useState(true);
   const [isShowing, setIsShowing] = useState(false);
-  let scl: any;
+  const [scl, setScl] = useState();
 
   function handleAside() {
     setAside(!aside);
@@ -18,39 +16,19 @@ export function Home() {
     setIsShowing((isShowing) => !isShowing);
   }
 
-  function handleScl(){
+  function handleScl() {
     window.electron.askForScl();
-    window.electron.scl((data:any) => {
-      scl = data
-    })
-
-    console.log(scl)
-    
+    window.electron.scl((data: any) => {
+      setScl(data);
+    });
+    console.log(scl);
   }
 
-
-
   useEffect(() => {
-    let arr: Array<any>;
-
-    window.electron.askForFiles()
-    window.electron.files((data: any) =>{
-      window.localStorage.setItem('files', JSON.stringify(data))
-      console.log(window.localStorage.getItem('files'))
-
-    
-    });
-
-    
+  
   });
 
-  
   return (
-
-    
-
-
-
     <div id="home" className="p-4 ">
       <aside
         style={{ transform: aside ? 'translateX(0)' : 'translateX(-94%)' }}
@@ -62,7 +40,9 @@ export function Home() {
         </header>
 
         <section className="transition ease-in-out delay-150 h-full w-full flex relative">
-          <div className="h-full w-full"></div>
+          <div className="h-full text-center w-full">
+            <div onClick={handleScl}>Log SCL</div>  
+          </div>
 
           <div
             onClick={handleAside}
@@ -87,14 +67,17 @@ export function Home() {
         </section>
       </aside>
 
-      <div id="home-content" className="pl-4 text-dark-50">
-        
-        <button onClick={handleScl} className='p-2 bg-treetech-700 text-treetech-50'>LER</button>
-
+      <div id="home-content" className="p-4 flex text-dark-50">
+        <div id="ieds" className="w-1/2 justify-center text-center">
+          TEXT
+        </div>
+        <div
+          id="data-type-template"
+          className="w-1/2 justify-center text-center"
+        >
+          TEXT
+        </div>
       </div>
-
-
-
 
       <Transition
         show={isShowing}
@@ -108,11 +91,10 @@ export function Home() {
         className="w-80 p-2 shadow-3xl bottom-[15rem] z-10 absolute"
         style={{ left: 'calc(50% - 7rem)' }}
       >
-        <div className='bg-gradient-to-r from-treetech-900 to-treetech-700 text-center rounded-md hover:cursor-pointer p-1 text-treetech-50'>Add +</div>
-        <List a = 
-        {JSON.parse(window.localStorage.getItem('files')!)}>
-
-        </List>
+        <div className="bg-gradient-to-r from-treetech-900 to-treetech-700 text-center rounded-md hover:cursor-pointer p-1 text-treetech-50">
+          Add +
+        </div>
+        <List a={JSON.parse(window.localStorage.getItem('files')!)}></List>
       </Transition>
 
       <div className="absolute bottom-2 left-1/2">
@@ -139,8 +121,6 @@ export function Home() {
 
         <h3 className="text-slate-50 my-2">Chose a SCL file</h3>
       </div>
-
-
     </div>
   );
 }

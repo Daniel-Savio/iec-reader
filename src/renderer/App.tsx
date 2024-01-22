@@ -47,20 +47,6 @@ export default function App() {
             Baixar SCL
           </div>
           
-          <Switch
-            checked={darkMode}
-            onChange={setDarkMode}
-            className={`${
-              darkMode ? 'bg-treetech-800' : 'bg-gray-300'
-            } relative inline-flex h-4 w-9 items-center rounded-full mr-2`}
-          >
-            <span
-              className={`${
-                darkMode ? 'translate-x-5' : 'translate-x-1'
-              } inline-block h-3 w-3 transform rounded-full bg-white transition`}
-            />
-          </Switch>
-
          
           <div id="minimize" onClick={handleMinimize} className='hover:cursor-pointer hover:bg-green-400  h-3 w-3 rounded-full bg-green-500'></div>
           <div id="maximize" onClick={handleMaximize} className='hover:cursor-pointer hover:bg-yellow-400 h-3 w-3 rounded-full  bg-yellow-500'></div>
