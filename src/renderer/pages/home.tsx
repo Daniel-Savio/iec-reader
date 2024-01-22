@@ -41,7 +41,7 @@ export function Home() {
 
         <section className="transition ease-in-out delay-150 h-full w-full flex relative">
           <div className="h-full text-center w-full">
-            <div onClick={handleScl}>Log SCL</div>  
+            <div className="p-2 bg-treetech-500" onClick={handleScl}>Log SCL</div>  
           </div>
 
           <div
@@ -94,7 +94,7 @@ export function Home() {
         <div className="bg-gradient-to-r from-treetech-900 to-treetech-700 text-center rounded-md hover:cursor-pointer p-1 text-treetech-50">
           Add +
         </div>
-        <List a={JSON.parse(window.localStorage.getItem('files')!)}></List>
+        <List arr={["asdadas", "asdasdasd"]}></List>
       </Transition>
 
       <div className="absolute bottom-2 left-1/2">

@@ -47,7 +47,7 @@ export function List(arr: string[]){
                           selected ? 'font-medium' : 'font-normal'
                         }`}
                       >
-                        {item.name}
+                        {item}
                       </span>
                       {selected ? (
                         <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-treetech-600">
