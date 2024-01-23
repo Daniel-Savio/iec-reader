@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
-import { List } from '../components/list';
+import List from '../components/list';
 import { Transition } from '@headlessui/react';
 
 export function Home() {
   const [aside, setAside] = useState(true);
   const [isShowing, setIsShowing] = useState(false);
-  const [scl, setScl] = useState();
+  const [scl, setScl] = useState("");
+  const [chosedScl, setChosedScl] = useState("");
+  
+
+  const list =[{name: "asdadas"}, {name: "asdasdasd"}]
 
   function handleAside() {
     setAside(!aside);
@@ -17,6 +21,7 @@ export function Home() {
   }
 
   function handleScl() {
+    console.log(chosedScl);
     window.electron.askForScl();
     window.electron.scl((data: any) => {
       setScl(data);
@@ -39,9 +44,9 @@ export function Home() {
           Tool Bar
         </header>
 
-        <section className="transition ease-in-out delay-150 h-full w-full flex relative">
-          <div className="h-full text-center w-full">
-            <div className="p-2 bg-treetech-500" onClick={handleScl}>Log SCL</div>  
+        <section className="transition ease-in-out delay-150 h-full flex text-center justify-center relative">
+          <div className="h-full justify-center text-center">
+            <div className="pl-1 pr-1 rounded-sm cursor-pointer bg-gradient-to-r from-treetech-900 to-treetech-700 mt-5 trasi transition-duration: 150ms hover:p-2 " onClick={handleScl}>Log SCL</div>  
           </div>
 
           <div
@@ -91,10 +96,13 @@ export function Home() {
         className="w-80 p-2 shadow-3xl bottom-[15rem] z-10 absolute"
         style={{ left: 'calc(50% - 7rem)' }}
       >
-        <div className="bg-gradient-to-r from-treetech-900 to-treetech-700 text-center rounded-md hover:cursor-pointer p-1 text-treetech-50">
+        <div id="add-scl-button" className="bg-gradient-to-r from-treetech-900 to-treetech-700 text-center rounded-md hover:cursor-pointer p-1 text-treetech-50">
           Add +
         </div>
-        <List arr={["asdadas", "asdasdasd"]}></List>
+
+      <List sclList={list} selectedScl={(callback: string)=>{setChosedScl(callback)}}/> 
+        
+        
       </Transition>
 
       <div className="absolute bottom-2 left-1/2">

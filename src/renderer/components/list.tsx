@@ -1,26 +1,23 @@
-import { Fragment, useEffect, useState } from 'react';
-import { Listbox, Transition } from '@headlessui/react';
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid';
+import { Fragment, useState } from 'react'
+import { Listbox, Transition } from '@headlessui/react'
+import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 
+interface ListComponent{
+  sclList: {name: string}[],
+  selectedScl: (callback: string)=>void
+}
 
-
-export function List(arr: string[]){
-  const [selected, setSelected] = useState();
-  const [list, setList] = useState();
-  
-
-
+export default function List({sclList, selectedScl}: ListComponent) {
+  const [selected, setSelected] = useState(sclList[0])
+  selectedScl(selected.name)
   return (
-    <div className="m-auto center text-center items-center w-full text-treetech-500">
-      <Listbox value={selected!} onChange={setSelected}>
+    <div className="w-full text-slate-50">
+      <Listbox value={selected} onChange={setSelected}>
         <div className="relative mt-1">
-          <Listbox.Button className="relative w-full cursor-pointer rounded-lg bg-dark-200 py-2 pl-3 pr-10 text-center shadow-md focus:outline-none  focus-visible:ring-offset-treetech-500">
-            <span className="block truncate">{selected!}</span>
+          <Listbox.Button className="relative w-full cursor-default rounded-lg bg-slate-700 py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+            <span className="block truncate">{selected.name}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-              <ChevronUpDownIcon
-                className="h-5 w-5 text-dark-50 hover:text-treetech-800"
-                aria-hidden="true"
-              />
+              <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true"/>
             </span>
           </Listbox.Button>
           <Transition
@@ -29,16 +26,16 @@ export function List(arr: string[]){
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Listbox.Options className="text-dark-50 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-dark-200 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              {arr!.map((item, itemIdx) => (
+            <Listbox.Options className=" absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-slate-700 py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+              {sclList.map((scl, index) => (
                 <Listbox.Option
-                  key={itemIdx}
+                  key={index}
                   className={({ active }) =>
                     `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                      active ? 'bg-gradient-to-l   from-treetech-900 to-treetech-70 text-dark-50' : 'text-dark-50'
+                      active ? 'bg-gradient-to-r from-slate-700 to-treetech-800 text-treetech-500' : 'text-slate-50'
                     }`
                   }
-                  value={item}
+                  value={scl}
                 >
                   {({ selected }) => (
                     <>
@@ -47,10 +44,10 @@ export function List(arr: string[]){
                           selected ? 'font-medium' : 'font-normal'
                         }`}
                       >
-                        {item}
+                        {scl.name}
                       </span>
                       {selected ? (
-                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-treetech-600">
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
                           <CheckIcon className="h-5 w-5" aria-hidden="true" />
                         </span>
                       ) : null}
@@ -63,5 +60,5 @@ export function List(arr: string[]){
         </div>
       </Listbox>
     </div>
-  );
+  )
 }
