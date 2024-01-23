@@ -16,6 +16,10 @@ export class SCL {
     this.parseScl(name)
   }
 
+  getFiles(){
+    console.log(fs.readdirSync(path.join(__dirname, "../archive/scl/")))
+  }
+
   parseScl(name: string){
     const xml = fs.readFileSync(this.sclPath, 'utf8');
     parseString(xml, (err, result)=>{

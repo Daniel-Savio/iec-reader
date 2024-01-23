@@ -7,6 +7,7 @@ export function Home() {
   const [isShowing, setIsShowing] = useState(false);
   const [scl, setScl] = useState("");
   const [chosedScl, setChosedScl] = useState("");
+  const [fileList, setFileList] = useState([{name: ""}])
   
 
   const list =[{name: "asdadas"}, {name: "asdasdasd"}]
@@ -18,16 +19,22 @@ export function Home() {
 
   function handleShowList() {
     setIsShowing((isShowing) => !isShowing);
+    window.electron.askForFiles()
+    window.electron.files((files: {name: string}[])=>{
+      setFileList(files)
+    })
+   
+      if(chosedScl) {
+        window.electron.send("scl", chosedScl)
+        window.electron.scl((scl: any) => {
+          console.log(scl)
+        })
+      }
+
+    
+    
   }
 
-  function handleScl() {
-    console.log(chosedScl);
-    window.electron.askForScl();
-    window.electron.scl((data: any) => {
-      setScl(data);
-    });
-    console.log(scl);
-  }
 
   useEffect(() => {
   
@@ -46,7 +53,7 @@ export function Home() {
 
         <section className="transition ease-in-out delay-150 h-full flex text-center justify-center relative">
           <div className="h-full justify-center text-center">
-            <div className="pl-1 pr-1 rounded-sm cursor-pointer bg-gradient-to-r from-treetech-900 to-treetech-700 mt-5 trasi transition-duration: 150ms hover:p-2 " onClick={handleScl}>Log SCL</div>  
+            <div className="pl-1 pr-1 rounded-sm cursor-pointer bg-gradient-to-r from-treetech-900 to-treetech-700 mt-5 trasi transition-duration: 150ms hover:p-2 ">Log SCL</div>  
           </div>
 
           <div
@@ -72,25 +79,34 @@ export function Home() {
         </section>
       </aside>
 
-      <div id="home-content" className="p-4 flex text-dark-50">
-        <div id="ieds" className="w-1/2 justify-center text-center">
-          TEXT
-        </div>
-        <div
-          id="data-type-template"
-          className="w-1/2 justify-center text-center"
-        >
-          TEXT
+
+      {/* CONTENT GOES HERE */}
+      <div id="home-content" className='text-center text-gray-300'>
+        <span className='text-sm'><strong className='text-bold'>Current SCL:</strong> {chosedScl}</span>
+        <div className="p-4 flex">
+          <div id="ieds" className="w-1/2 justify-center text-center">
+            TEXT
+          </div>
+          <div
+            id="data-type-template"
+            className="w-1/2 justify-center text-center"
+          >
+            TEXT
+          </div>
         </div>
       </div>
+
+
+
+
 
       <Transition
         show={isShowing}
         enter="transform transition duration-80"
         enterFrom="opacity-0 translate-y-56"
-        enterTo="opacity-100 translate-y-0"
+        enterTo="opacity-100 translate-y-10"
         leave="transition duration-150"
-        leaveFrom="opacity-100 translate-y-0"
+        leaveFrom="opacity-100 translate-y-10"
         leaveTo="opacity-0 translate-y-56"
         id="home-list"
         className="w-80 p-2 shadow-3xl bottom-[15rem] z-10 absolute"
@@ -100,7 +116,7 @@ export function Home() {
           Add +
         </div>
 
-      <List sclList={list} selectedScl={(callback: string)=>{setChosedScl(callback)}}/> 
+      <List sclList={fileList} selectedScl={(callback: string)=>{setChosedScl(callback)}}/> 
         
         
       </Transition>

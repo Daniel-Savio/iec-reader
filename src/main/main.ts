@@ -107,18 +107,13 @@ function getAllFiles(dir: string) {
   let index = 0
   for (const file of fileList) {
     const name = file;
-    let fileObject = {index: index, name: name}
+    let fileObject = {name: name}
     files.push(fileObject);
     index++
   }
   console.log(files)
   return files;
 }
-
-const scl = new SCL(path.join(__dirname, '../archive/scl/Jiga.cid'), "Jiga")
-
-
-
 
 
 // Window controller
@@ -142,12 +137,17 @@ ipcMain.on('maximize', async (event, arg) => {
     
 });
 
-ipcMain.on('askFor', async (event, arg) => {
-  if(arg === "scl"){ 
-  mainWindow!.webContents.send("scl", scl.getScl());
-}
+ipcMain.on("scl", async (event, sclName: string) => {
+  console.log(sclName)
+  const scl = await new SCL(path.join(__dirname, '../archive/scl/'+ sclName), sclName)
+  mainWindow!.webContents.send("scl-response", scl.getScl()) 
+  console.log("I've been caled")
+})
 
-  
+ipcMain.on('askFor', async (event, arg) => {
+  if(arg === "files"){ 
+    mainWindow!.webContents.send("files", getAllFiles(path.join(__dirname, '../archive/scl/')));
+  }
 });
 
 app.on('window-all-closed', () => {

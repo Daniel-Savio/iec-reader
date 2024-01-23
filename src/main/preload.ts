@@ -12,22 +12,26 @@ const electronHandler = {
   devTools: () => ipcRenderer.send('devTools', 'devTools'),
 
 
-  askForScl: () => ipcRenderer.send('askFor', 'scl'),
-  scl: (callback:any) => ipcRenderer.on('scl', (events, args)=>{
-    callback(args);
-  }),
-
   askForFiles: () => ipcRenderer.send('askFor', 'files'),
+
   files:(callback: any) => ipcRenderer.on('files', (events, args: string[])=>{
     callback(args);
   }),
 
+  scl:(callback:any) => ipcRenderer.on('scl-response', (events, args: any)=>{
+    callback(args)
+  }),
+
+
   send: (channel: any, args: any) => {
     ipcRenderer.send(channel, args);
   },
+  invoke: async (channel: any, args: any) =>{
+    await ipcRenderer.invoke(channel, args)
+  },
 
 
-  on: (channel: string, func: any) => ipcRenderer.send(channel, (evt: any, ...args: any[]) =>func(...args)),
+  on: (channel: string, listener: any) => ipcRenderer.on(channel, (evt, ...args: any[]) =>{ listener(args)}),
   
 }
 
