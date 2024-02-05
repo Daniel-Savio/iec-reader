@@ -4,12 +4,17 @@ import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 
 interface ListComponent{
   sclList: {name: string}[],
-  selectedScl: (callback: string)=>void
+  selectedScl: (callback: string)=>void,
+
 }
 
 export default function List({sclList, selectedScl}: ListComponent) {
   const [selected, setSelected] = useState(sclList[0])
   selectedScl(selected.name)
+
+
+
+  
   return (
     <div className="w-full text-slate-50">
       <Listbox value={selected} onChange={setSelected}>

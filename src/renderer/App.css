@@ -9,3 +9,7 @@
 #header-tools{
     -webkit-app-region: no-drag;
 }
+
+::-webkit-scrollbar {
+    width: 0
+}

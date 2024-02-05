@@ -29,8 +29,11 @@ export default function App() {
 
   return (
     <div
+      id='main-page'
+      style={{msOverflowStyle: "none", scrollbarWidth: "none"}}
       className={`${darkMode ? 'dark' : ''} 
-                flex flex-col  h-screen `}
+                flex flex-col  h-screen overflow-auto`}
+                
     >
       <Background />
 

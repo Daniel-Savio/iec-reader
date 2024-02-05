@@ -138,10 +138,10 @@ ipcMain.on('maximize', async (event, arg) => {
 });
 
 ipcMain.on("scl", async (event, sclName: string) => {
-  console.log(sclName)
+ 
   const scl = await new SCL(path.join(__dirname, '../archive/scl/'+ sclName), sclName)
   mainWindow!.webContents.send("scl-response", scl.getScl()) 
-  console.log("I've been caled")
+  
 })
 
 ipcMain.on('askFor', async (event, arg) => {
@@ -166,7 +166,7 @@ app.whenReady().then(() => {
       // dock icon is clicked and there are no other windows open.
       if (mainWindow === null) createWindow();
     });
-  }).catch(console.log);
+  }).catch();
 
 
 

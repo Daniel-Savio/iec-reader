@@ -27,8 +27,6 @@ export class SCL {
         this.scl = result
         // fs.writeFileSync(path.join(__dirname, "../archive/scl/json/"+name+".json"), JSON.stringify(result));
         // this.jsonPath = path.join(__dirname, "../archive/scl/json/"+name+".json")
-
-        console.log(this.scl)
       }
 
 
@@ -37,6 +35,10 @@ export class SCL {
 
   getScl(){
     return this.scl;
+  }
+
+  getIeds(){
+    return this.scl.IED
   }
 
 }

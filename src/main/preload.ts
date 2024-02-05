@@ -2,8 +2,6 @@ import { ipcRenderer } from "electron"
 const { contextBridge } = require('electron');
 
 
-console.log("preloaded file")
-
 const electronHandler = {
   //First value is the channel and the scond is the data
   close: () => ipcRenderer.send("closeApp", "closeApp"),
@@ -18,8 +16,8 @@ const electronHandler = {
     callback(args);
   }),
 
-  scl:(callback:any) => ipcRenderer.on('scl-response', (events, args: any)=>{
-    callback(args)
+  scl:(callback:any) =>  ipcRenderer.on('scl-response', async (events, args: any)=>{
+    await callback(args)
   }),
 
 

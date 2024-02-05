@@ -1,47 +1,101 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import List from '../components/list';
 import { Transition } from '@headlessui/react';
+import { current } from 'tailwindcss/colors';
 
 export function Home() {
   const [aside, setAside] = useState(true);
   const [isShowing, setIsShowing] = useState(false);
-  const [scl, setScl] = useState("");
-  const [chosedScl, setChosedScl] = useState("");
-  const [fileList, setFileList] = useState([{name: ""}])
-  
-
-  const list =[{name: "asdadas"}, {name: "asdasdasd"}]
+  const [scl, setScl] = useState<any>();
+  const [chosedScl, setChosedScl] = useState<string>('');
+  const [fileList, setFileList] = useState([{ name: '' }]);
 
   function handleAside() {
     setAside(!aside);
-    console.log(aside);
   }
 
   function handleShowList() {
     setIsShowing((isShowing) => !isShowing);
-    window.electron.askForFiles()
-    window.electron.files((files: {name: string}[])=>{
-      setFileList(files)
-    })
-   
-      if(chosedScl) {
-        window.electron.send("scl", chosedScl)
+    if (!isShowing) {
+      window.electron.askForFiles();
+      window.electron.files((files: { name: string }[]) => {
+        setFileList(files);
+      });
+    } else {
+      if (chosedScl) {
+        window.electron.send('scl', chosedScl);
         window.electron.scl((scl: any) => {
-          console.log(scl)
-        })
+          setScl(scl);
+        });
       }
-
-    
-    
+    }
   }
 
+  function printScl() {
+
+    if (!localStorage.getItem(chosedScl)) {
+      return <h1>None File</h1>;
+    } 
+    else{
+      let currentScl = JSON.parse(localStorage.getItem(chosedScl));
+      console.log(currentScl.IED);
+      console.log(currentScl.IED[0].AccessPoint[0].Server[0].LDevice);
+      return (
+        <section>
+          <h1 className="p-1 bg-treetech-700 w-fit rounded-lg font-bold">
+            {'< ' + currentScl.IED[0].$.name}
+          </h1>
+        
+            {
+              currentScl.IED[0].AccessPoint[0].Server[0].LDevice.map(
+                (LD: any) => {
+                  
+                  return (
+                    <section className=" m-10">
+                      <h1 className="w-fit bg-amber-600 font-bold rounded-lg pl-1 pr-1">{LD.$.inst} </h1>
+                      {LD.LN.map((LogicalNode: any) =>{
+                          return ( 
+                            <span className='flex justify-left gap-5 ml-5 mb-3 mt-1 '>
+                              <h2 className="bg-cyan-900 rounded-lg pl-1 pr-1 font-bold">{LogicalNode.$.lnClass}</h2> 
+                              <p className="text-sm text-cyan-500">{LogicalNode.$.lnType}</p>
+                              <p className="text-xs">{LogicalNode.$.inst}</p>
+                            </span>)
+                      })}
+                     
+                    </section>
+                    
+                    
+                    )
+                    
+                }
+              )
+            }
+
+          
+        </section>
+      );
+    }
+
+
+  }
 
   useEffect(() => {
-  
-  });
+    if (chosedScl) {
+      window.electron.send('scl', chosedScl);
+      setTimeout(() => {}, 1000);
+      console.log('UseEffect called');
+      window.electron.scl(async (scl: any) => {
+        setScl(scl);
+        localStorage.setItem(chosedScl, JSON.stringify(scl.SCL));
+      });
+    }
+  }, [chosedScl]);
+
+
 
   return (
-    <div id="home" className="p-4 ">
+
+    <div id="home" className="p-4 h-screen bg-dark-150" >
       <aside
         style={{ transform: aside ? 'translateX(0)' : 'translateX(-94%)' }}
         id="asside"
@@ -53,7 +107,9 @@ export function Home() {
 
         <section className="transition ease-in-out delay-150 h-full flex text-center justify-center relative">
           <div className="h-full justify-center text-center">
-            <div className="pl-1 pr-1 rounded-sm cursor-pointer bg-gradient-to-r from-treetech-900 to-treetech-700 mt-5 trasi transition-duration: 150ms hover:p-2 ">Log SCL</div>  
+            <div className="pl-1 pr-1 rounded-sm cursor-pointer bg-gradient-to-r from-treetech-900 to-treetech-700 mt-5 trasi transition-duration: 150ms hover:p-2 ">
+              Log SCL
+            </div>
           </div>
 
           <div
@@ -79,26 +135,32 @@ export function Home() {
         </section>
       </aside>
 
-
       {/* CONTENT GOES HERE */}
-      <div id="home-content" className='text-center text-gray-300'>
-        <span className='text-sm'><strong className='text-bold'>Current SCL:</strong> {chosedScl}</span>
-        <div className="p-4 flex">
-          <div id="ieds" className="w-1/2 justify-center text-center">
-            TEXT
+      <div id="home-content" className="text-center justify-center text-gray-300">
+        <span className="text-sm">
+          <strong className="text-bold">Current SCL:</strong> {chosedScl}
+        </span>
+
+        <div id="scl-content" className="p-4 flex">
+
+
+          <div id="devices" className="w-1/2">
+            <section id="ied" className='shadow-inner w-full p-5 rounded-lg bg-zinc-800 h-screen ml-10 justify-around text-center overflow-y-auto'>
+              {printScl()}
+              </section>
           </div>
+
+
           <div
             id="data-type-template"
             className="w-1/2 justify-center text-center"
           >
             TEXT
           </div>
+
+
         </div>
       </div>
-
-
-
-
 
       <Transition
         show={isShowing}
@@ -112,13 +174,19 @@ export function Home() {
         className="w-80 p-2 shadow-3xl bottom-[15rem] z-10 absolute"
         style={{ left: 'calc(50% - 7rem)' }}
       >
-        <div id="add-scl-button" className="bg-gradient-to-r from-treetech-900 to-treetech-700 text-center rounded-md hover:cursor-pointer p-1 text-treetech-50">
+        <div
+          id="add-scl-button"
+          className="bg-gradient-to-r from-treetech-900 to-treetech-700 text-center rounded-md hover:cursor-pointer p-1 text-treetech-50"
+        >
           Add +
         </div>
 
-      <List sclList={fileList} selectedScl={(callback: string)=>{setChosedScl(callback)}}/> 
-        
-        
+        <List
+          sclList={fileList}
+          selectedScl={(callback: string) => {
+            if (!isShowing) setChosedScl(callback);
+          }}
+        />
       </Transition>
 
       <div className="absolute bottom-2 left-1/2">
