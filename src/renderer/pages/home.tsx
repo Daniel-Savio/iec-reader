@@ -79,6 +79,47 @@ export function Home() {
 
   }
 
+  function printDataTypeTemplate(){
+    if (!localStorage.getItem(chosedScl)) {
+      return <h1>None File</h1>;
+    } 
+    else{
+      let currentScl = JSON.parse(localStorage.getItem(chosedScl));
+      
+      console.log(currentScl.DataTypeTemplates[0]);
+      return (
+        <section>
+          
+            {
+              currentScl.DataTypeTemplates[0].LNodeType.map(
+                (LN: any) => {
+                  
+                  return (
+                    <section className=" m-10">
+                      <h1 className="w-fit bg-amber-600 font-bold rounded-lg pl-1 pr-1">{LN.$.id} -- {LN.$.lnClass}</h1>
+                      {LN.DO.map((DO: any) =>{
+                          return ( 
+                            <span className='flex justify-left gap-5 ml-5 mb-3 mt-1 '>
+                              <h2 className="bg-cyan-900 rounded-lg pl-1 pr-1 font-bold">{DO.$.name}</h2> 
+                              <p className="text-sm text-cyan-500">{DO.$.type}</p>
+                            </span>)
+                      })}
+                     
+                    </section>
+                    
+                    
+                    )
+                    
+                }
+              )
+            }
+
+          
+        </section>
+      );
+    }
+  }
+
   useEffect(() => {
     if (chosedScl) {
       window.electron.send('scl', chosedScl);
@@ -135,32 +176,41 @@ export function Home() {
         </section>
       </aside>
 
+
+
       {/* CONTENT GOES HERE */}
       <div id="home-content" className="text-center justify-center text-gray-300">
-        <span className="text-sm">
+
+        <span id='chosed-scl' className="text-sm">
           <strong className="text-bold">Current SCL:</strong> {chosedScl}
         </span>
 
-        <div id="scl-content" className="p-4 flex">
+        <div id="scl-content" className="gap-2 justify-around flex">
 
 
-          <div id="devices" className="w-1/2">
-            <section id="ied" className='shadow-inner w-full p-5 rounded-lg bg-zinc-800 h-screen ml-10 justify-around text-center overflow-y-auto'>
+          <div id="devices" className="h-[95%]">
+            <section id="ied" className='shadow-inner w-full p-5 rounded-lg bg-zinc-800 max-h-[95%] justify-around text-center overflow-y'>
               {printScl()}
-              </section>
+            </section>
           </div>
 
 
-          <div
-            id="data-type-template"
-            className="w-1/2 justify-center text-center"
-          >
-            TEXT
+          <div id="data-type-template" className="h-[95%]">
+            <section id="template" className='shadow-inner w-full p-5 rounded-lg bg-zinc-800 max-h-[95%] justify-around text-center overflow-y'>
+              {printDataTypeTemplate()}
+            </section>
           </div>
 
 
         </div>
+
+
+
       </div>
+
+
+
+
 
       <Transition
         show={isShowing}
@@ -172,7 +222,7 @@ export function Home() {
         leaveTo="opacity-0 translate-y-56"
         id="home-list"
         className="w-80 p-2 shadow-3xl bottom-[15rem] z-10 absolute"
-        style={{ left: 'calc(50% - 7rem)' }}
+        style={{ left: 'calc(45% - 4rem)' }}
       >
         <div
           id="add-scl-button"
@@ -189,7 +239,7 @@ export function Home() {
         />
       </Transition>
 
-      <div className="absolute bottom-2 left-1/2">
+      <div className="absolute bottom-2 left-[45%]">
         <div
           onClick={handleShowList}
           id="add-scl"
@@ -211,7 +261,7 @@ export function Home() {
           </svg>
         </div>
 
-        <h3 className="text-slate-50 my-2">Chose a SCL file</h3>
+        <h3 className="text-slate-50 my-2">Escolha um arquivo SCL</h3>
       </div>
     </div>
   );
