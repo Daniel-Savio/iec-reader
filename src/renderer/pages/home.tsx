@@ -196,7 +196,7 @@ export function Home() {
 
 
           <div id="data-type-template" className="h-[95%]">
-            <section id="template" className='shadow-inner w-full p-5 rounded-lg bg-zinc-800 max-h-[95%] justify-around text-center overflow-y'>
+            <section id="template" className='shadow-inner w-full p-5 rounded-lg bg-zinc-800 max-h-[95%] justify-around overflow-y-auto text-center'>
               {printDataTypeTemplate()}
             </section>
           </div>
