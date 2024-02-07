@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import List from '../components/list';
 import { Transition } from '@headlessui/react';
 import { current } from 'tailwindcss/colors';
+import { Button } from '../components/button';
+import { ScrollArea } from '../components/scrollArea';
 
 export function Home() {
   const [aside, setAside] = useState(true);
@@ -89,7 +91,9 @@ export function Home() {
       console.log(currentScl.DataTypeTemplates[0]);
       return (
         <section>
-          
+            <h1 className="p-1 bg-treetech-700 w-fit rounded-lg font-bold">
+            {'< ' + "DataTypeTemplates"}
+            </h1>
             {
               currentScl.DataTypeTemplates[0].LNodeType.map(
                 (LN: any) => {
@@ -136,11 +140,11 @@ export function Home() {
 
   return (
 
-    <div id="home" className="p-4 h-screen bg-dark-150" >
+    <ScrollArea id="home" className="p-4 text-sm max-h-screen bg-dark-150" >
       <aside
         style={{ transform: aside ? 'translateX(0)' : 'translateX(-94%)' }}
         id="asside"
-        className="transition ease-in-out delay-150 drop-shadow-2xl bg-gray-300  dark:bg-dark-200 dark:text-treetech-50 text-center w-1/4 absolute left-0 top-50 rounded-e-md h-5/6"
+        className="transition ease-in-out delay-150 drop-shadow-2xl bg-gray-300  z-50 dark:bg-dark-200 dark:text-treetech-50 text-center w-1/4 absolute left-0 top-50 rounded-e-md h-5/6"
       >
         <header className="bg-gray-400 dark:bg-dark-250 rounded-tr-lg">
           Tool Bar
@@ -148,9 +152,9 @@ export function Home() {
 
         <section className="transition ease-in-out delay-150 h-full flex text-center justify-center relative">
           <div className="h-full justify-center text-center">
-            <div className="pl-1 pr-1 rounded-sm cursor-pointer bg-gradient-to-r from-treetech-900 to-treetech-700 mt-5 trasi transition-duration: 150ms hover:p-2 ">
-              Log SCL
-            </div>
+
+            <Button>Log</Button>
+
           </div>
 
           <div
@@ -188,18 +192,18 @@ export function Home() {
         <div id="scl-content" className="gap-2 justify-around flex">
 
 
-          <div id="devices" className="h-[95%]">
-            <section id="ied" className='shadow-inner w-full p-5 rounded-lg bg-zinc-800 max-h-[95%] justify-around text-center overflow-y'>
+          <div id="devices">
+            <ScrollArea id="ied" className='shadow-inner h-[900px] p-5 rounded-lg bg-zinc-800 justify-around text-center '>
               {printScl()}
-            </section>
+            </ScrollArea>
           </div>
 
-
-          <div id="data-type-template" className="h-[95%]">
-            <section id="template" className='shadow-inner w-full p-5 rounded-lg bg-zinc-800 max-h-[95%] justify-around overflow-y-auto text-center'>
+          <div id="data-type-template">
+            <ScrollArea id="template" className='shadow-inner h-[900px] p-5 rounded-lg bg-zinc-800 justify-around text-center'>
               {printDataTypeTemplate()}
-            </section>
+            </ScrollArea>
           </div>
+
 
 
         </div>
@@ -263,6 +267,6 @@ export function Home() {
 
         <h3 className="text-slate-50 my-2">Escolha um arquivo SCL</h3>
       </div>
-    </div>
+    </ScrollArea>
   );
 }
