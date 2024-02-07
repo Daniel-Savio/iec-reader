@@ -4,6 +4,8 @@ import { Transition } from '@headlessui/react';
 import { current } from 'tailwindcss/colors';
 import { Button } from '../components/button';
 import { ScrollArea } from '../components/scrollArea';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../components/tooltip';
+import { Sandwich } from 'lucide-react';
 
 export function Home() {
   const [aside, setAside] = useState(true);
@@ -11,6 +13,7 @@ export function Home() {
   const [scl, setScl] = useState<any>();
   const [chosedScl, setChosedScl] = useState<string>('');
   const [fileList, setFileList] = useState([{ name: '' }]);
+  const [LDqtd, setLDQtd] = useState<any>(0);
 
   function handleAside() {
     setAside(!aside);
@@ -34,11 +37,9 @@ export function Home() {
   }
 
   function printScl() {
-
     if (!localStorage.getItem(chosedScl)) {
       return <h1>None File</h1>;
-    } 
-    else{
+    } else {
       let currentScl = JSON.parse(localStorage.getItem(chosedScl));
       console.log(currentScl.IED);
       console.log(currentScl.IED[0].AccessPoint[0].Server[0].LDevice);
@@ -47,78 +48,83 @@ export function Home() {
           <h1 className="p-1 bg-treetech-700 w-fit rounded-lg font-bold">
             {'< ' + currentScl.IED[0].$.name}
           </h1>
-        
-            {
-              currentScl.IED[0].AccessPoint[0].Server[0].LDevice.map(
-                (LD: any) => {
-                  
-                  return (
-                    <section className=" m-10">
-                      <h1 className="w-fit bg-amber-600 font-bold rounded-lg pl-1 pr-1">{LD.$.inst} </h1>
-                      {LD.LN.map((LogicalNode: any) =>{
-                          return ( 
-                            <span className='flex justify-left gap-5 ml-5 mb-3 mt-1 '>
-                              <h2 className="bg-cyan-900 rounded-lg pl-1 pr-1 font-bold">{LogicalNode.$.lnClass}</h2> 
-                              <p className="text-sm text-cyan-500">{LogicalNode.$.lnType}</p>
-                              <p className="text-xs">{LogicalNode.$.inst}</p>
-                            </span>)
-                      })}
-                     
-                    </section>
-                    
-                    
-                    )
-                    
-                }
-              )
-            }
 
-          
+          {currentScl.IED[0].AccessPoint[0].Server[0].LDevice.map((LD: any) => {
+            return (
+              <section className=" m-10">
+                <h1 className="w-fit bg-amber-600 font-bold rounded-lg pl-1 pr-1">
+                  {LD.$.inst}{' '}
+                </h1>
+                {LD.LN.map((LogicalNode: any) => {
+                  return (
+                    <span className="flex justify-left gap-5 ml-5 mb-3 mt-1 ">
+                      <h2 className="bg-cyan-900 rounded-lg pl-1 pr-1 font-bold">
+                        {LogicalNode.$.lnClass}
+                      </h2>
+                      <p className="text-sm text-cyan-500">
+                        {LogicalNode.$.lnType}
+                      </p>
+                      <p className="text-xs">{LogicalNode.$.inst}</p>
+                    </span>
+                  );
+                })}
+              </section>
+            );
+          })}
         </section>
       );
     }
-
-
   }
 
-  function printDataTypeTemplate(){
+  function printLD(){
     if (!localStorage.getItem(chosedScl)) {
-      return <h1>None File</h1>;
-    } 
+      return <h1>None File Selected</h1>;
+    }
     else{
       let currentScl = JSON.parse(localStorage.getItem(chosedScl));
-      
+      return (
+        currentScl.IED[0].AccessPoint[0].Server[0].LDevice.map((LDevice: any)=>{
+          return(
+            <h1>{LDevice.$.inst}</h1>
+          )
+        })
+      )
+
+    }
+  
+  }
+  
+  function printDataTypeTemplate() {
+    if (!localStorage.getItem(chosedScl)) {
+      return <h1>None File</h1>;
+    } else {
+      let currentScl = JSON.parse(localStorage.getItem(chosedScl));
+
       console.log(currentScl.DataTypeTemplates[0]);
       return (
         <section>
-            <h1 className="p-1 bg-treetech-700 w-fit rounded-lg font-bold">
-            {'< ' + "DataTypeTemplates"}
-            </h1>
-            {
-              currentScl.DataTypeTemplates[0].LNodeType.map(
-                (LN: any) => {
-                  
+          <h1 className="p-1 bg-treetech-700 w-fit rounded-lg font-bold">
+            {'< ' + 'DataTypeTemplates'}
+          </h1>
+          {currentScl.DataTypeTemplates[0].LNodeType.map((LN: any) => {
+            return (
+              <section className=" m-10">
+                <h1 className="w-fit bg-amber-600 font-bold rounded-lg pl-1 pr-1">
+                  {LN.$.id} -- {LN.$.lnClass}
+                </h1>
+                {LN.DO.map((DO: any) => {
                   return (
-                    <section className=" m-10">
-                      <h1 className="w-fit bg-amber-600 font-bold rounded-lg pl-1 pr-1">{LN.$.id} -- {LN.$.lnClass}</h1>
-                      {LN.DO.map((DO: any) =>{
-                          return ( 
-                            <span className='flex justify-left gap-5 ml-5 mb-3 mt-1 '>
-                              <h2 className="bg-cyan-900 rounded-lg pl-1 pr-1 font-bold">{DO.$.name}</h2> 
-                              <p className="text-sm text-cyan-500">{DO.$.type}</p>
-                            </span>)
-                      })}
-                     
-                    </section>
-                    
-                    
-                    )
-                    
-                }
-              )
-            }
-
-          
+                    <span className="flex justify-left gap-5 ml-5 mb-3 mt-1 ">
+                      <h2 className="bg-cyan-900 rounded-lg pl-1 pr-1 font-bold">
+                        {DO.$.name}
+                      </h2>
+                      <p className="text-sm text-cyan-500">{DO.$.type}</p>
+                    </span>
+                  );
+                })}
+              </section>
+            );
+          })}
         </section>
       );
     }
@@ -136,11 +142,8 @@ export function Home() {
     }
   }, [chosedScl]);
 
-
-
   return (
-
-    <ScrollArea id="home" className="p-4 text-sm max-h-screen bg-dark-150" >
+    <ScrollArea id="home" className="p-4 text-sm max-h-screen bg-dark-150">
       <aside
         style={{ transform: aside ? 'translateX(0)' : 'translateX(-94%)' }}
         id="asside"
@@ -150,10 +153,25 @@ export function Home() {
           Tool Bar
         </header>
 
-        <section className="transition ease-in-out delay-150 h-full flex text-center justify-center relative">
-          <div className="h-full justify-center text-center">
+        <section className="transition ease-in-out delay-150 h-full flex relative">
+          <div className="h-full justify-center text-center pt-4 px-2">
+            <div id="ld-info" className='flex gap-3'>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className='font-bold '>Logical Devices:</div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Dispositivos lógicos presentes no arquivo {chosedScl}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
 
-            <Button>Log</Button>
+            <span>{LDqtd}</span>
+
+            {printLD()}
+
+            </div>
 
           </div>
 
@@ -180,41 +198,35 @@ export function Home() {
         </section>
       </aside>
 
-
-
       {/* CONTENT GOES HERE */}
-      <div id="home-content" className="text-center justify-center text-gray-300">
-
-        <span id='chosed-scl' className="text-sm">
+      <div
+        id="home-content"
+        className="text-center justify-center text-gray-300"
+      >
+        <span id="chosed-scl" className="text-sm">
           <strong className="text-bold">Current SCL:</strong> {chosedScl}
         </span>
 
         <div id="scl-content" className="gap-2 justify-around flex">
-
-
           <div id="devices">
-            <ScrollArea id="ied" className='shadow-inner h-[900px] p-5 rounded-lg bg-zinc-800 justify-around text-center '>
+            <ScrollArea
+              id="ied"
+              className="shadow-inner h-[900px] p-5 rounded-lg bg-zinc-800 justify-around text-center "
+            >
               {printScl()}
             </ScrollArea>
           </div>
 
           <div id="data-type-template">
-            <ScrollArea id="template" className='shadow-inner h-[900px] p-5 rounded-lg bg-zinc-800 justify-around text-center'>
+            <ScrollArea
+              id="template"
+              className="shadow-inner h-[900px] p-5 rounded-lg bg-zinc-800 justify-around text-center"
+            >
               {printDataTypeTemplate()}
             </ScrollArea>
           </div>
-
-
-
         </div>
-
-
-
       </div>
-
-
-
-
 
       <Transition
         show={isShowing}
