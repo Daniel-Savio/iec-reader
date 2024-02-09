@@ -1,11 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
 import List from '../components/list';
 import { Transition } from '@headlessui/react';
-import { current } from 'tailwindcss/colors';
-import { Button } from '../components/button';
 import { ScrollArea } from '../components/scrollArea';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../components/tooltip';
 import { Sandwich } from 'lucide-react';
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '../components/drawer'; 
 
 export function Home() {
   const [aside, setAside] = useState(true);
@@ -14,6 +22,7 @@ export function Home() {
   const [chosedScl, setChosedScl] = useState<string>('');
   const [fileList, setFileList] = useState([{ name: '' }]);
   const [LDqtd, setLDQtd] = useState<any>(0);
+  const [LNqtd, setLNQtd] = useState<any>(0);
 
   function handleAside() {
     setAside(!aside);
@@ -77,15 +86,23 @@ export function Home() {
   }
 
   function printLD(){
+    
     if (!localStorage.getItem(chosedScl)) {
       return <h1>None File Selected</h1>;
     }
     else{
+      
       let currentScl = JSON.parse(localStorage.getItem(chosedScl));
+      
+      
       return (
         currentScl.IED[0].AccessPoint[0].Server[0].LDevice.map((LDevice: any)=>{
           return(
-            <h1>{LDevice.$.inst}</h1>
+            <>
+              <h1 className='w-fit' >{LDevice.$.inst}</h1>
+              <hr className='mb-2' />
+            </>
+            
           )
         })
       )
@@ -130,15 +147,43 @@ export function Home() {
     }
   }
 
+  function printLN() {
+    if (!localStorage.getItem(chosedScl)) {
+      return <h1>None File Selected</h1>;
+    }
+    else{
+      
+      let currentScl = JSON.parse(localStorage.getItem(chosedScl));
+      
+      
+      return (
+        currentScl.DataTypeTemplates[0].LNodeType.map((LN: any)=>{
+          return(
+            <>
+              <h1 className='w-fit' >{LN.$.id}</h1>
+              <hr className='mb-2' />
+            </>
+            
+          )
+        })
+      )
+
+    }
+  }
+
   useEffect(() => {
     if (chosedScl) {
       window.electron.send('scl', chosedScl);
       setTimeout(() => {}, 1000);
-      console.log('UseEffect called');
       window.electron.scl(async (scl: any) => {
-        setScl(scl);
+        setScl(scl.SCL);
         localStorage.setItem(chosedScl, JSON.stringify(scl.SCL));
+        let currentScl = JSON.parse(localStorage.getItem(chosedScl));
+        setLDQtd(currentScl.IED[0].AccessPoint[0].Server[0].LDevice.length)
+        setLNQtd(currentScl.DataTypeTemplates[0].LNodeType.length)
       });
+     
+      
     }
   }, [chosedScl]);
 
@@ -153,9 +198,11 @@ export function Home() {
           Tool Bar
         </header>
 
-        <section className="transition ease-in-out delay-150 h-full flex relative">
-          <div className="h-full justify-center text-center pt-4 px-2">
+        <section className="transition ease-in-out delay-150 h-full w-full relative">
+          <div className="h-full  flex flex-col gap-3 text-center pt-4 px-2">
+
             <div id="ld-info" className='flex gap-3'>
+            
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -167,10 +214,32 @@ export function Home() {
               </Tooltip>
             </TooltipProvider>
 
-            <span>{LDqtd}</span>
+            <span >{LDqtd}</span>
 
-            {printLD()}
+            <ScrollArea className='max-h-[100px] w-[200px] bg-zinc-700 p-2 rounded'>
+              {printLD()}
+            </ScrollArea>
 
+        
+            </div>
+
+            <div id='ln-info' className='flex gap-3'>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className='font-bold '>Logical Nodes:</div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Logical Nodes presentes no arquivo {chosedScl}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            <span >{LNqtd}</span>
+
+            <ScrollArea className='max-h-[100px] w-[200px] bg-zinc-700 p-2 rounded'>
+              {printLN()}
+            </ScrollArea>
             </div>
 
           </div>
