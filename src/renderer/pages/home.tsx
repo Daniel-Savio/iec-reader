@@ -2,7 +2,12 @@ import { useState, useEffect, useRef } from 'react';
 import List from '../components/list';
 import { Transition } from '@headlessui/react';
 import { ScrollArea } from '../components/scrollArea';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../components/tooltip';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../components/tooltip';
 import { Sandwich } from 'lucide-react';
 import {
   Drawer,
@@ -13,8 +18,8 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from '../components/drawer'; 
-
+} from '../components/drawer';
+import glossario from '../glossario.json';
 export function Home() {
   const [aside, setAside] = useState(true);
   const [isShowing, setIsShowing] = useState(false);
@@ -85,32 +90,25 @@ export function Home() {
     }
   }
 
-  function printLD(){
-    
+  function printLD() {
     if (!localStorage.getItem(chosedScl)) {
       return <h1>None File Selected</h1>;
-    }
-    else{
-      
+    } else {
       let currentScl = JSON.parse(localStorage.getItem(chosedScl));
-      
-      
-      return (
-        currentScl.IED[0].AccessPoint[0].Server[0].LDevice.map((LDevice: any)=>{
-          return(
-            <>
-              <h1 className='w-fit' >{LDevice.$.inst}</h1>
-              <hr className='mb-2' />
-            </>
-            
-          )
-        })
-      )
 
+      return currentScl.IED[0].AccessPoint[0].Server[0].LDevice.map(
+        (LDevice: any) => {
+          return (
+            <>
+              <h1 className="w-fit">{LDevice.$.inst}</h1>
+              <hr className="mb-2" />
+            </>
+          );
+        }
+      );
     }
-  
   }
-  
+
   function printDataTypeTemplate() {
     if (!localStorage.getItem(chosedScl)) {
       return <h1>None File</h1>;
@@ -120,9 +118,19 @@ export function Home() {
       console.log(currentScl.DataTypeTemplates[0]);
       return (
         <section>
-          <h1 className="p-1 bg-treetech-700 w-fit rounded-lg font-bold">
-            {'< ' + 'DataTypeTemplates'}
-          </h1>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <h1 className="p-1 bg-treetech-700 w-fit rounded-lg font-bold cursor-default">
+                  {'< ' + 'DataTypeTemplates'}
+                </h1>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{glossario.definitions.DataTypeTemplates.desc}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
           {currentScl.DataTypeTemplates[0].LNodeType.map((LN: any) => {
             return (
               <section className=" m-10">
@@ -150,24 +158,17 @@ export function Home() {
   function printLN() {
     if (!localStorage.getItem(chosedScl)) {
       return <h1>None File Selected</h1>;
-    }
-    else{
-      
+    } else {
       let currentScl = JSON.parse(localStorage.getItem(chosedScl));
-      
-      
-      return (
-        currentScl.DataTypeTemplates[0].LNodeType.map((LN: any)=>{
-          return(
-            <>
-              <h1 className='w-fit' >{LN.$.id}</h1>
-              <hr className='mb-2' />
-            </>
-            
-          )
-        })
-      )
 
+      return currentScl.DataTypeTemplates[0].LNodeType.map((LN: any) => {
+        return (
+          <>
+            <h1 className="w-fit">{LN.$.id}</h1>
+            <hr className="mb-2" />
+          </>
+        );
+      });
     }
   }
 
@@ -179,11 +180,9 @@ export function Home() {
         setScl(scl.SCL);
         localStorage.setItem(chosedScl, JSON.stringify(scl.SCL));
         let currentScl = JSON.parse(localStorage.getItem(chosedScl));
-        setLDQtd(currentScl.IED[0].AccessPoint[0].Server[0].LDevice.length)
-        setLNQtd(currentScl.DataTypeTemplates[0].LNodeType.length)
+        setLDQtd(currentScl.IED[0].AccessPoint[0].Server[0].LDevice.length);
+        setLNQtd(currentScl.DataTypeTemplates[0].LNodeType.length);
       });
-     
-      
     }
   }, [chosedScl]);
 
@@ -200,48 +199,45 @@ export function Home() {
 
         <section className="transition ease-in-out delay-150 h-full w-full relative">
           <div className="h-full  flex flex-col gap-3 text-center pt-4 px-2">
+            <div id="ld-info" className="flex gap-3">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="font-bold cursor-help">
+                      Logical Devices:
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{glossario.definitions.LogicalDevices.desc}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
 
-            <div id="ld-info" className='flex gap-3'>
-            
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className='font-bold '>Logical Devices:</div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Dispositivos lógicos presentes no arquivo {chosedScl}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+              <span>{LDqtd}</span>
 
-            <span >{LDqtd}</span>
-
-            <ScrollArea className='max-h-[100px] w-[200px] bg-zinc-700 p-2 rounded'>
-              {printLD()}
-            </ScrollArea>
-
-        
+              <ScrollArea className="max-h-[100px] w-[200px] bg-zinc-700 p-2 rounded">
+                {printLD()}
+              </ScrollArea>
             </div>
 
-            <div id='ln-info' className='flex gap-3'>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className='font-bold '>Logical Nodes:</div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Logical Nodes presentes no arquivo {chosedScl}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <div id="ln-info" className="flex gap-3">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="font-bold cursor-help">Logical Nodes:</div>
+                  </TooltipTrigger>
+                  <TooltipContent className="">
+                    <p> {glossario.definitions.LogicalNode.desc}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
 
-            <span >{LNqtd}</span>
+              <span>{LNqtd}</span>
 
-            <ScrollArea className='max-h-[100px] w-[200px] bg-zinc-700 p-2 rounded'>
-              {printLN()}
-            </ScrollArea>
+              <ScrollArea className="max-h-[100px] w-[200px] bg-zinc-700 p-2 rounded">
+                {printLN()}
+              </ScrollArea>
             </div>
-
           </div>
 
           <div

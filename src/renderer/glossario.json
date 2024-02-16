@@ -1,0 +1,9 @@
+{
+    "definitions":{
+        "LogicalNode":{"desc":"Consiste no objeto que contem as informações e pontos referentes a sua classe. Um Logical Node próprio para buchas deverá conter informações que dizem respeito a bucha, assim como um próprio para óleo também deverá conter informações sobre o óleo."},
+        "LogicalDevices":{"desc":"Um dispositivo lógico é um objeto de dados abstrato que representa um ou mais elementos de função ou dispositivos físicos em uma subestação. Um dispositivo lógico pode ser representado por um ou mais nós lógicos. Para a Treetech, tratamos cada IED concectado a um SD+/SDG como um Logical Device distinto "},
+        "DataTypeTemplates":{"desc": "No DataTypeTemplate é onde devem ser encontradas as propriedades e tipos de cada ponto presente no SCL. Se um ponto é binário ou analógico, como ele deverá se comportar, quais informações pode receber, tudo isso deve ser declarado dentro dessa área"}
+        
+    }
+    
+}

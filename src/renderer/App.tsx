@@ -37,11 +37,11 @@ export default function App() {
     >
       <Background />
 
-      <header id='title-bar' className="flex justify-between pl-4 pr-4 pt-1 pb-1 items-center border-b-2 border-dark-100 bg-gray-400 dark:bg-dark-250">
+      <header id='title-bar' className="flex justify-between px-4 py-1 items-center border-b-2 border-dark-100 bg-gray-400 dark:bg-dark-250">
         
         <div className="flex items-center ">
-          <img src={require('./img/icon.svg')} className='h-10' />
-          <h1 className="text-lg font-bold dark:text-treetech-50">SCL Manager</h1>
+          <img src={require('./img/icon.svg')} className='h-8' />
+          <h1 className="text-md font-bold dark:text-treetech-50">SCL Manager</h1>
         </div>
 
         <div id='header-tools' className="flex items-center gap-2 ">
