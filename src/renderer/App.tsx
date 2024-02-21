@@ -5,6 +5,7 @@ import { Home } from './pages/home';
 import { Background } from './components/backgorund';
 import { useState } from 'react';
 import { Switch } from '@headlessui/react';
+import { Button } from './components/button';
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(true);
@@ -37,7 +38,7 @@ export default function App() {
     >
       <Background />
 
-      <header id='title-bar' className="flex justify-between px-4 py-1 items-center border-b-2 border-dark-100 bg-gray-400 dark:bg-dark-250">
+      <header id='title-bar' className="flex justify-between px-4  items-center border-b-2 border-dark-100 bg-secondary">
         
         <div className="flex items-center ">
           <img src={require('./img/icon.svg')} className='h-8' />
@@ -46,14 +47,14 @@ export default function App() {
 
         <div id='header-tools' className="flex items-center gap-2 ">
 
-          <div className="pl-4 pr-4 text-md bg-gradient-to-r from-treetech-900 to-treetech-700   text-treetech-50 rounded-sm hover:cursor-pointer">
+          <Button className="text-sm py-0 px-3">
             Baixar SCL
-          </div>
+          </Button>
           
          
-          <div id="minimize" onClick={handleMinimize} className='hover:cursor-pointer hover:bg-green-400  h-3 w-3 rounded-full bg-green-500'></div>
-          <div id="maximize" onClick={handleMaximize} className='hover:cursor-pointer hover:bg-yellow-400 h-3 w-3 rounded-full  bg-yellow-500'></div>
-          <div id="close" onClick={handleClose} className='hover:cursor-pointer hover:bg-red-400 h-3 w-3 rounded-full bg-red-500'></div>
+          <div id="minimize" onClick={handleMinimize} className='hover:cursor-pointer hover:bg-green-400  h-2 w-2 rounded-full bg-green-500'></div>
+          <div id="maximize" onClick={handleMaximize} className='hover:cursor-pointer hover:bg-yellow-400 h-2 w-2 rounded-full  bg-yellow-500'></div>
+          <div id="close" onClick={handleClose} className='hover:cursor-pointer hover:bg-red-400 h-2 w-2 rounded-full bg-red-500'></div>
 
         </div>
 

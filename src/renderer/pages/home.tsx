@@ -21,6 +21,8 @@ import {
 } from '../components/drawer';
 import glossario from '../glossario.json';
 export function Home() {
+
+  //? Variable declaration ?//
   const [aside, setAside] = useState(true);
   const [isShowing, setIsShowing] = useState(false);
   const [scl, setScl] = useState<any>();
@@ -28,6 +30,8 @@ export function Home() {
   const [fileList, setFileList] = useState([{ name: '' }]);
   const [LDqtd, setLDQtd] = useState<any>(0);
   const [LNqtd, setLNQtd] = useState<any>(0);
+
+
 
   function handleAside() {
     setAside(!aside);
@@ -172,6 +176,9 @@ export function Home() {
     }
   }
 
+
+
+
   useEffect(() => {
     if (chosedScl) {
       window.electron.send('scl', chosedScl);
@@ -186,18 +193,24 @@ export function Home() {
     }
   }, [chosedScl]);
 
+
+
+
+
   return (
-    <ScrollArea id="home" className="p-4 text-sm max-h-screen bg-dark-150">
-      <aside
-        style={{ transform: aside ? 'translateX(0)' : 'translateX(-94%)' }}
-        id="asside"
-        className="transition ease-in-out delay-150 drop-shadow-2xl bg-gray-300  z-50 dark:bg-dark-200 dark:text-treetech-50 text-center w-1/4 absolute left-0 top-50 rounded-e-md h-5/6"
+
+
+    <ScrollArea id="home" className="p-4 text-sm max-h-screen bg-background">
+
+
+      <aside style={{ transform: aside ? 'translateX(0)' : 'translateX(-96%)' }} id="asside" className="bg-background transition ease-in-out delay-150 drop-shadow-2xl z-50 dark:text-treetech-50 text-center w-1/3 absolute left-0 top-[80px] rounded-e-md h-5/6"
       >
-        <header className="bg-gray-400 dark:bg-dark-250 rounded-tr-lg">
+        <header className="bg-secondary rounded-tr-lg">
           Tool Bar
         </header>
 
         <section className="transition ease-in-out delay-150 h-full w-full relative">
+
           <div className="h-full  flex flex-col gap-3 text-center pt-4 px-2">
             <div id="ld-info" className="flex gap-3">
               <TooltipProvider>
@@ -242,7 +255,7 @@ export function Home() {
 
           <div
             onClick={handleAside}
-            className={`w-5 h-full -top-6 right-0 rounded-e-md bg-slate-500 border-l-2 dark:bg-dark-200 dark:border-dark-100 absolute flex justify-center items-center hover:cursor-pointer`}
+            className={`w-5 h-full -top-5 right-0 rounded-e-md bg-secondary absolute flex justify-center items-center hover:cursor-pointer`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -260,7 +273,12 @@ export function Home() {
               />
             </svg>
           </div>
+
         </section>
+
+
+
+
       </aside>
 
       {/* CONTENT GOES HERE */}
@@ -276,7 +294,7 @@ export function Home() {
           <div id="devices">
             <ScrollArea
               id="ied"
-              className="shadow-inner h-[900px] p-5 rounded-lg bg-zinc-800 justify-around text-center "
+              className="shadow-inner h-[900px] p-5 rounded-lg bg-secondary justify-around text-center "
             >
               {printScl()}
             </ScrollArea>
@@ -285,7 +303,7 @@ export function Home() {
           <div id="data-type-template">
             <ScrollArea
               id="template"
-              className="shadow-inner h-[900px] p-5 rounded-lg bg-zinc-800 justify-around text-center"
+              className="shadow-inner h-[900px] p-5 rounded-lg bg-secondary justify-around text-center"
             >
               {printDataTypeTemplate()}
             </ScrollArea>
@@ -344,6 +362,13 @@ export function Home() {
 
         <h3 className="text-slate-50 my-2">Escolha um arquivo SCL</h3>
       </div>
+
+
     </ScrollArea>
+
+
   );
+
+
+
 }
